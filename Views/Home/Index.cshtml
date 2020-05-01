@@ -1,0 +1,78 @@
+﻿
+@model List<EmployeeModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int page = 0;
+    if (ViewBag.page == null)
+    {
+        page = 1;
+    }
+    else
+    {
+        page = ViewBag.page;
+    }
+    int start = (page - 1) * 9;
+    int end = page * 9;
+    var Pagination = Math.Ceiling(Model.Count / 9.0);
+    if (end > Model.Count)
+    {
+        end = Model.Count;
+    }
+
+    var Previous = 0;
+    var next = 0;
+}
+@section header{
+    <link href="~/css/Style.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@for (int i = start; i < end; i++)
+{
+    var photoPath = "~/images/" + (Model[i].PhotoPath ?? "1.png");
+    <div class="card m-1" style="width:360px;height:530px;float:left;margin-bottom:20px" margin-bottom:20px>
+        <div class="card-header">
+            <h3>@Model[i].Name</h3>
+        </div>
+        <img class="card-img-top image" src="@photoPath" asp-append-version="true" alt="" />
+        <div class="card-footer text-center">
+            <a asp-action="Details" asp-controller="Home"
+               asp-route-id="@Model[i].ID" class="btn btn-primary" id="view">View</a>
+                <a asp-action="Edit" asp-controller="Home" asp-route-id="@Model[i].ID" class="btn btn-primary" id="edit">Edit</a>
+                <form asp-controller="home" asp-action="delete" asp-route-id="@Model[i].ID" >
+                    <button onclick="return confirm('Are you sure you want to delete ? ')" class="btn btn-danger" type="submit" id="delete">Delete</button>
+                </form>
+            
+        </div>
+    </div>
+}
+<div style="clear:both">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @if (page > 1)
+            {
+                Previous = page - 1;
+            }
+            else
+            {
+                Previous = 1;
+            }
+            <li class="page-item"><a class="page-link" asp-controller="home" asp-action="index" asp-route-id="@Previous">Previous</a></li>
+            @for (int i = 1; i <= Pagination; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-controller="home" asp-action="index" asp-route-id="@i">@i</a></li>
+            }
+            @if (page < Pagination)
+            {
+                next = page + 1;
+            }
+            else
+            {
+                next = (int)Pagination;
+            }
+            <li class="page-item"><a class="page-link" asp-controller="home" asp-action="index" asp-route-id="@next">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+

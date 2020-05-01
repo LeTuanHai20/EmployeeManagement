@@ -1,0 +1,90 @@
+﻿@inject SignInManager<ApplicationUser> user
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+
+    <environment include="Development">
+        <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/css/_Layout.css" rel="stylesheet" />
+        <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/jquery-validate/jquery.validate.js" ></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
+        @RenderSection("header", required: false)
+    </environment>
+</head>
+<body>
+    <div class="container" style="padding:0">
+        <div class="navbar navbar-expand-sm bg-dark navbar-dark ">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="collapsibleNavbar"></button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Home" class="nav-link">List</a>
+                    </li>
+
+
+                    @if (user.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        {
+                            <li class="nav-item">
+                                <a asp-action="Create" asp-controller="Home" class="nav-link">Create</a>
+                            </li>
+                            <li class="nav-item">
+                                <div class="dropdown manage" style="color:#212529">
+                                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Manage
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" asp-action="ListRoles" asp-controller="administration">Roles</a>
+                                        <a class="dropdown-item" asp-action="ListUsers" asp-controller="administration">User</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }
+                    else if (user.IsSignedIn(User) && User.IsInRole("Employee"))
+                    {
+                        <li class="nav-item">
+                            <a asp-action="Create" asp-controller="Home" class="nav-link">Create</a>
+                        </li>
+                        
+                        }
+                    </ul>
+                <ul class="navbar-nav ml-auto">
+                    @if (user.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form asp-action="Logout" asp-controller="Account" method="post">
+                                <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="ChangePassword" asp-controller="account" style="color:rgba(255, 255, 255, 0.5);text-decoration:none">Change password</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a asp-action="Register" asp-controller="Account" class="nav-link">Register</a>
+                        </li>
+                        <li class="nav-item float-left">
+                            <a asp-action="Login" asp-controller="Account" class="nav-link">Login</a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="container body">
+        @RenderBody()
+    </div>
+</body>
+@RenderSection("Script", required: false)
+</html>

@@ -1,0 +1,53 @@
+﻿@model EmployeeCreateViewModel
+@{
+     ViewBag.Tilte = "Create Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header{ 
+    <link href="~/css/StyleCreatePage.css" rel="stylesheet" asp-append-version="true"/>
+}
+
+<form asp-action="Create" asp-controller="Home" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Name" asp-for="Name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input class="form-control" placeholder="Enter Email" asp-for="Email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Department"></label>
+        <select class="form-control" asp-for="Department" asp-items="Html.GetEnumSelectList<Dept>()">
+            <option value="">Please Select</option>
+        </select>
+        <span asp-validation-for="Department" class="text-danger"></span>
+
+    </div>
+    <div class="form-group">
+        <label asp-for="Photo"></label>
+        <div class="custom-file">
+            <input class="form-control custom-file-input" placeholder="Enter Images" asp-for="Photo">
+            <label class="custom-file-label">Choose file...</label>
+        </div>
+    </div>
+
+    @*<div asp-validation-summary="All">
+        use for div elements to give error o cung mot noi
+            asp-validation-for ddung cho the span
+        </div>*@
+    <button type="submit" class="btn btn-primary">Submit</button>
+    @section Script{
+        <script>
+            $(document).ready(function () {
+                $(".custom-file-input").on("change", function () {
+                    var fileLabel = $(this).next(".custom-file-label");
+                    var files = $(this)[0].files;
+                        fileLabel.html(files[0].name);             
+                });
+            });
+        </script>
+    }
+</form>

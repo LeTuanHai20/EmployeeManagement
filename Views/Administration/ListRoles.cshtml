@@ -1,0 +1,58 @@
+﻿@model IEnumerable<IdentityRole>
+@{
+    ViewData["Title"] = "List Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>All Roles</h1>
+@if (Model.Any())
+{
+    <a class="btn btn-primary mb-3" asp-action="CreateRole" asp-controller="Administration">
+        Create a new Role
+    </a>
+    foreach (var role in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Role ID : @role.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    @role.Name
+                </h5>
+            </div>
+            <div class="card-footer">
+                <form asp-action="deleteRole" asp-controller="Administration" asp-route-id="@role.Id" method="post">
+                    <a class="btn btn-primary" asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id">Edit</a>
+                    <span id="confirmDelete_@role.Id" style="display:none">
+                        <span>Are you sure you want to delete ? </span>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                        <a onclick="ConfirmDelete('@role.Id', false)" class="btn btn-danger">No</a>
+                    </span>
+                    <span id="delete_@role.Id">
+                        <a onclick="ConfirmDelete('@role.Id', true)" class="btn btn-danger">Delete</a>
+                    </span>
+                </form>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No roles created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a role
+            </h5>
+            <a class="btn btn-primary" asp-action="CreateRole" asp-controller="Administration">
+                Create Role
+            </a>
+        </div>
+    </div>
+}
+@section Script{ 
+    <script src="~/js/CustomScript.js"></script>
+}

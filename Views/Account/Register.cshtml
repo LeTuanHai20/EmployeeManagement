@@ -1,0 +1,27 @@
+﻿@model RegisterViewModel
+@{
+    ViewBag.Title = "User Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <h1>User Registration</h1>
+    <form asp-action="Register" asp-controller="Account" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All"></div>
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Email" asp-for="Email">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PassWord"></label>
+            <input class="form-control" placeholder="Enter PassWord" asp-for="PassWord">
+            <span asp-validation-for="PassWord" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ConfirmPassWord"></label>
+            <input class="form-control" placeholder="Confirm PassWord" asp-for="ConfirmPassWord">
+            <span asp-validation-for="ConfirmPassWord" class="text-danger"></span>
+
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>

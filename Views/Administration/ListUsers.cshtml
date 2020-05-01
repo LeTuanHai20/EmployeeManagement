@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "ListUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>List Users</h1>
+@if (Model.Any())
+{
+    <a class="btn btn-primary mb-3" asp-action="Register" asp-controller="account">
+        Add new User
+    </a>
+    foreach (var user in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                User ID : @user.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    @user.UserName
+                </h5>
+            </div>
+            <div class="card-footer">
+                <form asp-action="deleteUser" asp-controller="Administration" asp-route-id="@user.Id" method="post">
+                    <a class="btn btn-primary" asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id">Edit</a>
+                    <span id="confirmDelete_@user.Id" style="display:none">
+                        <span>Are you sure you want to delete ? </span>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                        <a onclick="ConfirmDelete('@user.Id', false)" class="btn btn-danger">No</a>
+                    </span>
+                    <span id="delete_@user.Id">
+                        <a onclick="ConfirmDelete('@user.Id', true)" class="btn btn-danger">Delete</a>
+                    </span>
+                </form>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No user created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a User
+            </h5>
+            <a class="btn btn-primary" asp-action="register" asp-controller="account">
+                Create User
+            </a>
+        </div>
+    </div>
+}
+@section Script{
+    <script src="~/js/CustomScript.js"></script>
+ }
+
